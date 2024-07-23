@@ -14,8 +14,7 @@ const tripSchema = new Schema({
         type: Date,
         required: true
     }
-}, { timestamps: true });
-
-const Trip = mongoose.model('Trip', tripSchema);
+}, { timestamps: true, collection: 'tripsDetails' });
+const Trip = mongoose.model('trip', tripSchema);
 
 module.exports = Trip;

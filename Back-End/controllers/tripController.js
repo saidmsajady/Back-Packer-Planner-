@@ -45,9 +45,21 @@ const trip_delete = (req, res) => {
         });
 }
 
+const trip_update = (req, res) => {
+    const id = req.params.id;
+    Trip.findByIdAndUpdate(id, req.body, { new: true })
+        .then((result) => {
+            res.json({ trip: result });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
 module.exports = {
     trip_index,
     trip_details,
     trip_create_post,
-    trip_delete
+    trip_delete,
+    trip_update
 }
