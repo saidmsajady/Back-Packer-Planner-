@@ -4,7 +4,7 @@ const NotFound = () => {
   return (
     <>
         <h1>
-            404NotFound
+            404 Not Found
         </h1>
     </>
   )
