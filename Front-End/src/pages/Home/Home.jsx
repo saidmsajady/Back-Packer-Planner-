@@ -34,10 +34,15 @@ const Home = () => {
 
   const handleEditSubmit = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/trips/${id}`, editFormData);
-      // Update the trips state with the new data
+      // Adjust dates for server processing
+      const updatedTrip = {
+        ...editFormData,
+        startDate: new Date(editFormData.startDate + 'T00:00:00').toISOString(),
+        endDate: new Date(editFormData.endDate + 'T00:00:00').toISOString()
+      };
+      await axios.put(`http://localhost:3000/trips/${id}`, updatedTrip);
       setTrips(trips.map(trip =>
-        trip._id === id ? { ...trip, ...editFormData } : trip
+        trip._id === id ? { ...trip, ...updatedTrip } : trip
       ));
       setEditingTrip(null);
     } catch (error) {
@@ -48,7 +53,6 @@ const Home = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/trips/${id}`);
-      // Remove the deleted trip from the UI
       setTrips(trips.filter(trip => trip._id !== id));
     } catch (error) {
       console.error('Error deleting trip:', error);
@@ -59,8 +63,8 @@ const Home = () => {
     setEditingTrip(trip._id);
     setEditFormData({
       country: trip.country,
-      startDate: trip.startDate,
-      endDate: trip.endDate
+      startDate: trip.startDate.split('T')[0], // Display date only
+      endDate: trip.endDate.split('T')[0] // Display date only
     });
   };
 
@@ -89,13 +93,13 @@ const Home = () => {
                   <input
                     type="date"
                     name="startDate"
-                    value={editFormData.startDate.split('T')[0]} // Format date input
+                    value={editFormData.startDate} // Format date input
                     onChange={handleEditChange}
                   />
                   <input
                     type="date"
                     name="endDate"
-                    value={editFormData.endDate.split('T')[0]} // Format date input
+                    value={editFormData.endDate} // Format date input
                     onChange={handleEditChange}
                   />
                   <button
@@ -114,7 +118,7 @@ const Home = () => {
               ) : (
                 <div className="trip-details">
                   <h2>{trip.country}</h2>
-                  <p>{`From: ${new Date(trip.startDate).toDateString()} To: ${new Date(trip.endDate).toDateString()}`}</p>
+                  <p>{`From: ${new Date(trip.startDate).toLocaleDateString()} To: ${new Date(trip.endDate).toLocaleDateString()}`}</p>
                   <div className="trip-actions">
                     <button
                       className="edit-button"
