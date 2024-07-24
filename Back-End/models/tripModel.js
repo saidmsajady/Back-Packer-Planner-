@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tripSchema = new Schema({
+    title: {
+      type: String,
+      required: true
+    },
     countries: [
       {
         country: {
@@ -20,7 +24,7 @@ const tripSchema = new Schema({
         }
       }
     ]
-  }, { timestamps: true, collection: 'tripsDetails' });
+  }, { timestamps: true, collection: 'tripsDetails' });  
   
 const Trip = mongoose.model('trip', tripSchema);
 

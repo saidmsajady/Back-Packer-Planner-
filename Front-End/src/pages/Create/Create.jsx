@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Create = () => {
+  const [title, setTitle] = useState('');
   const [countries, setCountries] = useState([{ country: '', startDate: '', endDate: '' }]);
   const navigate = useNavigate();
 
@@ -24,12 +25,14 @@ const Create = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Format dates to be consistent
-    const newTrip = { countries: countries.map(({ country, startDate, endDate }) => ({
-      country,
-      startDate: new Date(startDate).toISOString(),
-      endDate: new Date(endDate).toISOString(),
-    })) };
+    const newTrip = {
+      title,
+      countries: countries.map(({ country, startDate, endDate }) => ({
+        country,
+        startDate: new Date(startDate).toISOString(),
+        endDate: new Date(endDate).toISOString(),
+      }))
+    };
 
     try {
       await axios.post('http://localhost:3000/trips', newTrip);
@@ -42,6 +45,15 @@ const Create = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+        <label>Title:</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+      </div>
       {countries.map((_, index) => (
         <div key={index} className="trip-entry">
           <label>Country:</label>
@@ -71,7 +83,7 @@ const Create = () => {
           <button type="button" onClick={() => handleRemoveCountry(index)}>Remove</button>
         </div>
       ))}
-      <button type="button" onClick={handleAddCountry}>Add Country</button>
+      <button type="button" onClick={handleAddCountry}>Add Destination</button>
       <button type="submit">Create Trip</button>
     </form>
   );

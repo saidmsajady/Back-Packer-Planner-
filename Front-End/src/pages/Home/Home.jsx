@@ -6,6 +6,7 @@ const Home = () => {
   const [trips, setTrips] = useState([]);
   const [editingTrip, setEditingTrip] = useState(null);
   const [editFormData, setEditFormData] = useState({
+    title: '',
     countries: [{ country: '', startDate: '', endDate: '' }]
   });
 
@@ -52,7 +53,7 @@ const Home = () => {
 
   const startEditing = (trip) => {
     setEditingTrip(trip._id);
-    setEditFormData({ countries: trip.countries });
+    setEditFormData({ title: trip.title, countries: trip.countries });
   };
 
   return (
@@ -70,6 +71,16 @@ const Home = () => {
             <div key={trip._id} className="trip-card">
               {editingTrip === trip._id ? (
                 <div className="edit-form">
+                  <input
+                    type="text"
+                    name="title"
+                    value={editFormData.title}
+                    onChange={(e) => setEditFormData(prevState => ({
+                      ...prevState,
+                      title: e.target.value
+                    }))}
+                    placeholder="Title"
+                  />
                   {editFormData.countries.map((country, index) => (
                     <div key={index} className="edit-entry">
                       <input
@@ -108,6 +119,7 @@ const Home = () => {
                 </div>
               ) : (
                 <div className="trip-details">
+                  <h1>{trip.title}</h1>
                   {trip.countries.map((country, index) => (
                     <div key={index} className="trip-country">
                       <h2>{country.country}</h2>
@@ -123,6 +135,7 @@ const Home = () => {
                     </button>
                     <button
                       className="delete-button"
+
                       onClick={() => handleDelete(trip._id)}
                     >
                       Delete
