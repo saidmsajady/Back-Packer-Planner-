@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-// import './Home.css';
 
 const Home = () => {
   const [trips, setTrips] = useState([]);
@@ -67,7 +66,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1>Home</h1>
       {trips.length === 0 ? (
         <div className="no-trips">
           <p>No Trips Planned</p>

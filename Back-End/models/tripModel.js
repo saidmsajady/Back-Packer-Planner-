@@ -1,3 +1,5 @@
+// This file defines the trip data schema. Creating the structure of say how new data would be entered
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

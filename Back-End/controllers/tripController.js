@@ -1,3 +1,5 @@
+// This file manages the logic for handling request and interaction with db models. ie: deleting, updating, creating, getting
+
 const Trip = require('../models/tripModel');
 
 const trip_index = (req, res) => {
