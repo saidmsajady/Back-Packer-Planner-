@@ -3,20 +3,33 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Create = () => {
-  const [country, setCountry] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [countries, setCountries] = useState([{ country: '', startDate: '', endDate: '' }]);
   const navigate = useNavigate();
+
+  const handleChange = (index, e) => {
+    const { name, value } = e.target;
+    const newCountries = [...countries];
+    newCountries[index][name] = value;
+    setCountries(newCountries);
+  };
+
+  const handleAddCountry = () => {
+    setCountries([...countries, { country: '', startDate: '', endDate: '' }]);
+  };
+
+  const handleRemoveCountry = (index) => {
+    setCountries(countries.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Adjust dates to avoid timezone issues
-    const newTrip = {
+    // Format dates to be consistent
+    const newTrip = { countries: countries.map(({ country, startDate, endDate }) => ({
       country,
-      startDate: new Date(startDate + 'T00:00:00').toISOString(), // Add time part to avoid timezone issues
-      endDate: new Date(endDate + 'T00:00:00').toISOString(), // Add time part to avoid timezone issues
-    };
+      startDate: new Date(startDate).toISOString(),
+      endDate: new Date(endDate).toISOString(),
+    })) };
 
     try {
       await axios.post('http://localhost:3000/trips', newTrip);
@@ -29,36 +42,37 @@ const Create = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Country:</label>
-        <input
-          type="text"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Start Date:</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>End Date:</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">
-        Create Trip
-      </button>
+      {countries.map((_, index) => (
+        <div key={index} className="trip-entry">
+          <label>Country:</label>
+          <input
+            type="text"
+            name="country"
+            value={countries[index].country}
+            onChange={(e) => handleChange(index, e)}
+            required
+          />
+          <label>Start Date:</label>
+          <input
+            type="date"
+            name="startDate"
+            value={countries[index].startDate}
+            onChange={(e) => handleChange(index, e)}
+            required
+          />
+          <label>End Date:</label>
+          <input
+            type="date"
+            name="endDate"
+            value={countries[index].endDate}
+            onChange={(e) => handleChange(index, e)}
+            required
+          />
+          <button type="button" onClick={() => handleRemoveCountry(index)}>Remove</button>
+        </div>
+      ))}
+      <button type="button" onClick={handleAddCountry}>Add Country</button>
+      <button type="submit">Create Trip</button>
     </form>
   );
 };

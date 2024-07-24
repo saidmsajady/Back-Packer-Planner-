@@ -6,9 +6,7 @@ const Home = () => {
   const [trips, setTrips] = useState([]);
   const [editingTrip, setEditingTrip] = useState(null);
   const [editFormData, setEditFormData] = useState({
-    country: '',
-    startDate: '',
-    endDate: ''
+    countries: [{ country: '', startDate: '', endDate: '' }]
   });
 
   useEffect(() => {
@@ -24,25 +22,18 @@ const Home = () => {
     fetchTrips();
   }, []);
 
-  const handleEditChange = (e) => {
+  const handleEditChange = (index, e) => {
     const { name, value } = e.target;
-    setEditFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    const newEditFormData = { ...editFormData };
+    newEditFormData.countries[index][name] = value;
+    setEditFormData(newEditFormData);
   };
 
   const handleEditSubmit = async (id) => {
     try {
-      // Adjust dates for server processing
-      const updatedTrip = {
-        ...editFormData,
-        startDate: new Date(editFormData.startDate + 'T00:00:00').toISOString(),
-        endDate: new Date(editFormData.endDate + 'T00:00:00').toISOString()
-      };
-      await axios.put(`http://localhost:3000/trips/${id}`, updatedTrip);
+      await axios.put(`http://localhost:3000/trips/${id}`, editFormData);
       setTrips(trips.map(trip =>
-        trip._id === id ? { ...trip, ...updatedTrip } : trip
+        trip._id === id ? { ...trip, ...editFormData } : trip
       ));
       setEditingTrip(null);
     } catch (error) {
@@ -61,11 +52,7 @@ const Home = () => {
 
   const startEditing = (trip) => {
     setEditingTrip(trip._id);
-    setEditFormData({
-      country: trip.country,
-      startDate: trip.startDate.split('T')[0], // Display date only
-      endDate: trip.endDate.split('T')[0] // Display date only
-    });
+    setEditFormData({ countries: trip.countries });
   };
 
   return (
@@ -83,25 +70,29 @@ const Home = () => {
             <div key={trip._id} className="trip-card">
               {editingTrip === trip._id ? (
                 <div className="edit-form">
-                  <input
-                    type="text"
-                    name="country"
-                    value={editFormData.country}
-                    onChange={handleEditChange}
-                    placeholder="Country"
-                  />
-                  <input
-                    type="date"
-                    name="startDate"
-                    value={editFormData.startDate} // Format date input
-                    onChange={handleEditChange}
-                  />
-                  <input
-                    type="date"
-                    name="endDate"
-                    value={editFormData.endDate} // Format date input
-                    onChange={handleEditChange}
-                  />
+                  {editFormData.countries.map((country, index) => (
+                    <div key={index} className="edit-entry">
+                      <input
+                        type="text"
+                        name="country"
+                        value={country.country}
+                        onChange={(e) => handleEditChange(index, e)}
+                        placeholder="Country"
+                      />
+                      <input
+                        type="date"
+                        name="startDate"
+                        value={country.startDate.split('T')[0]}
+                        onChange={(e) => handleEditChange(index, e)}
+                      />
+                      <input
+                        type="date"
+                        name="endDate"
+                        value={country.endDate.split('T')[0]}
+                        onChange={(e) => handleEditChange(index, e)}
+                      />
+                    </div>
+                  ))}
                   <button
                     className="save-button"
                     onClick={() => handleEditSubmit(trip._id)}
@@ -117,8 +108,12 @@ const Home = () => {
                 </div>
               ) : (
                 <div className="trip-details">
-                  <h2>{trip.country}</h2>
-                  <p>{`From: ${new Date(trip.startDate).toLocaleDateString()} To: ${new Date(trip.endDate).toLocaleDateString()}`}</p>
+                  {trip.countries.map((country, index) => (
+                    <div key={index} className="trip-country">
+                      <h2>{country.country}</h2>
+                      <p>{`From: ${new Date(country.startDate).toDateString()} To: ${new Date(country.endDate).toDateString()}`}</p>
+                    </div>
+                  ))}
                   <div className="trip-actions">
                     <button
                       className="edit-button"
