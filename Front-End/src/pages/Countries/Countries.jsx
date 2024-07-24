@@ -16,7 +16,7 @@ const Countries = () => {
         setCountries(sortedCountries);
 
         // Extract unique regions
-        const uniqueRegions = [...new Set(response.data.map(country => country.region))].filter(Boolean);
+        const uniqueRegions = [...new Set(response.data.map(country => country.region).filter(Boolean))];
         setRegions(uniqueRegions);
       } catch (error) {
         console.error('Error fetching countries:', error);
@@ -43,28 +43,29 @@ const Countries = () => {
 
   return (
     <>
+    <br/><br/>
       <div className="filter-controls">
-      <input
-        type="text"
-        placeholder="Search by country name"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="search-input"
-      />
-      <select value={selectedRegion} onChange={handleRegionChange} className="region-select">
-        <option value="">All Regions</option>
-        {regions.map(region => (
-          <option key={region} value={region}>{region}</option>
-        ))}
-      </select>
-    </div>
+        <input
+          type="text"
+          placeholder="Search by country name"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+        <select value={selectedRegion} onChange={handleRegionChange} className="region-select">
+          <option value="">All Regions</option>
+          {regions.map(region => (
+            <option key={region} value={region}>{region}</option>
+          ))}
+        </select>
+      </div>
       <div className="countries-container">
         {filteredCountries.map(country => (
           <div key={country.name.common} className="country-card">
             <img src={country.flags.svg} alt={`${country.name.common} flag`} className="country-flag" />
             <h2>{country.name.common}</h2>
             <p>Capital: {country.capital ? country.capital[0] : 'N/A'}</p>
-            <p>Region: {country.region}</p>
+            <p>Region: {country.region || 'N/A'}</p>
             <p>
               Languages: {country.languages 
                 ? Object.values(country.languages).join(', ') 
@@ -83,6 +84,5 @@ const Countries = () => {
     </>
   );
 };
-
 
 export default Countries;
