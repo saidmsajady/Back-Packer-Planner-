@@ -61,9 +61,6 @@ const Home = () => {
       {trips.length === 0 ? (
         <div className="no-trips">
           <p>No Trips Planned</p>
-          <Link to="/Create">
-            <button className="create-trip-button">Create Trip</button>
-          </Link>
         </div>
       ) : (
         <div className="trips-list">
@@ -135,7 +132,6 @@ const Home = () => {
                     </button>
                     <button
                       className="delete-button"
-
                       onClick={() => handleDelete(trip._id)}
                     >
                       Delete
@@ -147,6 +143,11 @@ const Home = () => {
           ))}
         </div>
       )}
+      <div className="create-trip-container">
+        <Link to="/Create">
+          <button className="create-trip-button">Create Trip</button>
+        </Link>
+      </div>
     </div>
   );
 };
