@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const cors = require('cors'); // Import cors
+const cors = require('cors'); 
 const connectToDb = require('./config/dbConnect');
 const tripRoutes = require('./routes/tripRoutes');
 
@@ -8,7 +8,7 @@ const tripRoutes = require('./routes/tripRoutes');
 const app = express();
 
 // Middleware
-app.use(cors()); // Use cors middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
