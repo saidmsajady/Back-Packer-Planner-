@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Ensure you import the CSS file
+import './Home.css'; 
 
 const Home = () => {
   const [trips, setTrips] = useState([]);
@@ -78,92 +78,95 @@ const Home = () => {
           <p>No Trips Planned</p>
         </div>
       ) : (
-        <div className="trips-list">
-          {trips.map(trip => (
-            <div key={trip._id} className="trip-card">
-              {editingTrip === trip._id ? (
-                <div className="edit-form">
-                  <input
-                    type="text"
-                    name="title"
-                    value={editFormData.title}
-                    onChange={(e) => setEditFormData(prevState => ({
-                      ...prevState,
-                      title: e.target.value
-                    }))}
-                    placeholder="Title"
-                  />
-                  {editFormData.countries.map((country, index) => (
-                    <div key={index} className="edit-entry">
-                      <input
-                        type="text"
-                        name="country"
-                        value={country.country}
-                        onChange={(e) => handleEditChange(index, e)}
-                        placeholder="Country"
-                      />
-                      <input
-                        type="date"
-                        name="startDate"
-                        value={country.startDate.split('T')[0]}
-                        onChange={(e) => handleEditChange(index, e)}
-                      />
-                      <input
-                        type="date"
-                        name="endDate"
-                        value={country.endDate.split('T')[0]}
-                        onChange={(e) => handleEditChange(index, e)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeCountry(index)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                  <button type="button" onClick={addCountry}>Add Country</button>
-                  <button
-                    className="save-button"
-                    onClick={() => handleEditSubmit(trip._id)}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="cancel-button"
-                    onClick={() => setEditingTrip(null)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <div className="trip-details">
-                  <h1>{trip.title}</h1>
-                  {trip.countries.map((country, index) => (
-                    <div key={index} className="trip-country">
-                      <h2>{country.country}</h2>
-                      <p>{`From: ${new Date(country.startDate).toDateString()} To: ${new Date(country.endDate).toDateString()}`}</p>
-                    </div>
-                  ))}
-                  <div className="trip-actions">
+        <>
+          <h2>All Your Trips Below</h2>
+          <div className="trips-list">
+            {trips.map(trip => (
+              <div key={trip._id} className="trip-card">
+                {editingTrip === trip._id ? (
+                  <div className="edit-form">
+                    <input
+                      type="text"
+                      name="title"
+                      value={editFormData.title}
+                      onChange={(e) => setEditFormData(prevState => ({
+                        ...prevState,
+                        title: e.target.value
+                      }))}
+                      placeholder="Title"
+                    />
+                    {editFormData.countries.map((country, index) => (
+                      <div key={index} className="edit-entry">
+                        <input
+                          type="text"
+                          name="country"
+                          value={country.country}
+                          onChange={(e) => handleEditChange(index, e)}
+                          placeholder="Country"
+                        />
+                        <input
+                          type="date"
+                          name="startDate"
+                          value={country.startDate.split('T')[0]}
+                          onChange={(e) => handleEditChange(index, e)}
+                        />
+                        <input
+                          type="date"
+                          name="endDate"
+                          value={country.endDate.split('T')[0]}
+                          onChange={(e) => handleEditChange(index, e)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeCountry(index)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={addCountry}>Add Country</button>
                     <button
-                      className="edit-button"
-                      onClick={() => startEditing(trip)}
+                      className="save-button"
+                      onClick={() => handleEditSubmit(trip._id)}
                     >
-                      Edit
+                      Save
                     </button>
                     <button
-                      className="delete-button"
-                      onClick={() => handleDelete(trip._id)}
+                      className="cancel-button"
+                      onClick={() => setEditingTrip(null)}
                     >
-                      Delete
+                      Cancel
                     </button>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                ) : (
+                  <div className="trip-details">
+                    <h1>{trip.title}</h1>
+                    {trip.countries.map((country, index) => (
+                      <div key={index} className="trip-country">
+                        <h2>{country.country}</h2>
+                        <p>{`From: ${new Date(country.startDate).toDateString()} To: ${new Date(country.endDate).toDateString()}`}</p>
+                      </div>
+                    ))}
+                    <div className="trip-actions">
+                      <button
+                        className="edit-button"
+                        onClick={() => startEditing(trip)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDelete(trip._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
       )}
       <div className="create-trip-container">
         <Link to="/Create">
