@@ -56,6 +56,20 @@ const Home = () => {
     setEditFormData({ title: trip.title, countries: trip.countries });
   };
 
+  const addCountry = () => {
+    setEditFormData(prevState => ({
+      ...prevState,
+      countries: [...prevState.countries, { country: '', startDate: '', endDate: '' }]
+    }));
+  };
+
+  const removeCountry = (index) => {
+    setEditFormData(prevState => {
+      const newCountries = prevState.countries.filter((_, i) => i !== index);
+      return { ...prevState, countries: newCountries };
+    });
+  };
+
   return (
     <div className="home-container">
       {trips.length === 0 ? (
@@ -99,8 +113,15 @@ const Home = () => {
                         value={country.endDate.split('T')[0]}
                         onChange={(e) => handleEditChange(index, e)}
                       />
+                      <button
+                        type="button"
+                        onClick={() => removeCountry(index)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   ))}
+                  <button type="button" onClick={addCountry}>Add Country</button>
                   <button
                     className="save-button"
                     onClick={() => handleEditSubmit(trip._id)}
