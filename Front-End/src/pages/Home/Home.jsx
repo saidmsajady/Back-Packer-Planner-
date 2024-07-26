@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './Home.css'; // Ensure you import the CSS file
 
 const Home = () => {
   const [trips, setTrips] = useState([]);
