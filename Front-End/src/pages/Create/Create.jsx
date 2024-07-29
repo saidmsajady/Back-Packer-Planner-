@@ -49,6 +49,7 @@ const Create = () => {
       <div>
         <label className='trip-title'>Trip Title:</label>
         <input
+          placeholder='Enter Your Trip Title'
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -59,6 +60,7 @@ const Create = () => {
         <div key={index} className="trip-entry">
           <label>Destination:</label>
           <input
+            placeholder='Blank'
             type="text"
             name="country"
             value={countries[index].country}

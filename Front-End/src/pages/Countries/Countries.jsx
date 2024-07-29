@@ -15,7 +15,6 @@ const Countries = () => {
         const sortedCountries = response.data.sort((a, b) => a.name.common.localeCompare(b.name.common));
         setCountries(sortedCountries);
 
-        // Extract unique regions
         const uniqueRegions = [...new Set(response.data.map(country => country.region).filter(Boolean))];
         setRegions(uniqueRegions);
       } catch (error) {
