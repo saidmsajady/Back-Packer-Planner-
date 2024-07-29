@@ -29,3 +29,37 @@
 .save-button, .cancel-button, .edit-button, .delete-button, .create-trip-button {
   margin-top: 10px;
 }
+
+.delete-button, .cancel-button, .remove-button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.delete-button:hover, .cancel-button:hover, .remove-button:hover{
+  background-color: #c82333;
+}
+
+.save-button, .edit-button, .create-trip-button, .add-country-button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-button:hover, .edit-button:hover, .create-trip-button:hover, .add-country-button:hover {
+  background-color: #0056b3;
+}
+
+.edit-button, .delete-button {
+  margin-left: 10px;
+}

@@ -117,6 +117,7 @@ const Home = () => {
                           onChange={(e) => handleEditChange(index, e)}
                         />
                         <button
+                          className="remove-button"
                           type="button"
                           onClick={() => removeCountry(index)}
                         >
@@ -124,7 +125,7 @@ const Home = () => {
                         </button>
                       </div>
                     ))}
-                    <button type="button" onClick={addCountry}>Add Country</button>
+                    <button className="add-country-button" type="button" onClick={addCountry}>Add Country</button>
                     <button
                       className="save-button"
                       onClick={() => handleEditSubmit(trip._id)}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Create.css'
+import './Create.css';
 
 const Create = () => {
   const [title, setTitle] = useState('');
@@ -32,7 +32,7 @@ const Create = () => {
         country,
         startDate: new Date(startDate).toISOString(),
         endDate: new Date(endDate).toISOString(),
-      }))
+      })),
     };
 
     try {
@@ -47,7 +47,7 @@ const Create = () => {
   return (
     <form className='create-container' onSubmit={handleSubmit}>
       <div>
-        <label>Title:</label>
+        <label className='trip-title'>Trip Title:</label>
         <input
           type="text"
           value={title}
@@ -55,10 +55,9 @@ const Create = () => {
           required
         />
       </div>
-      <br/>
       {countries.map((_, index) => (
         <div key={index} className="trip-entry">
-          <label>Country:</label>
+          <label>Destination:</label>
           <input
             type="text"
             name="country"
@@ -66,7 +65,6 @@ const Create = () => {
             onChange={(e) => handleChange(index, e)}
             required
           />
-          <br/>
           <label>Start Date:</label>
           <input
             type="date"
@@ -75,7 +73,6 @@ const Create = () => {
             onChange={(e) => handleChange(index, e)}
             required
           />
-          <br/>
           <label>End Date:</label>
           <input
             type="date"
@@ -84,11 +81,10 @@ const Create = () => {
             onChange={(e) => handleChange(index, e)}
             required
           />
-          <br/>
           <button type="button" onClick={() => handleRemoveCountry(index)}>Remove</button>
         </div>
       ))}
-      <button className='' type="button" onClick={handleAddCountry}>Add Destination</button>
+      <button type="button" onClick={handleAddCountry}>Add Destination</button>
       <button type="submit">Create Trip</button>
     </form>
   );
