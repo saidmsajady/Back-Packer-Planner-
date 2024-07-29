@@ -79,7 +79,7 @@ const Home = () => {
         </div>
       ) : (
         <>
-          <h2>All Your Trips Below</h2>
+          <h2> See All Your Trips Below !</h2>
           <div className="trips-list">
             {trips.map(trip => (
               <div key={trip._id} className="trip-card">
